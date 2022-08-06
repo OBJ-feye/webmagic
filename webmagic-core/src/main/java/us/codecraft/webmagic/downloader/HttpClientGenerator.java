@@ -57,16 +57,8 @@ public class HttpClientGenerator {
     }
 
     private SSLConnectionSocketFactory buildSSLConnectionSocketFactory() {
-        try {
-            SSLContext sslContext = createIgnoreVerifySSL();
-            String[] supportedProtocols;
-            if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_11)) {
-                supportedProtocols = new String[] { "SSLv3", "TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3" };
-            } else {
-                supportedProtocols = new String[] { "SSLv3", "TLSv1", "TLSv1.1", "TLSv1.2" };
-            }
-            logger.debug("supportedProtocols: {}", String.join(", ", supportedProtocols));
-            return new SSLConnectionSocketFactory(sslContext, supportedProtocols,
+      try {
+            return new SSLConnectionSocketFactory(createIgnoreVerifySSL(), new String[]{"SSLv3", "TLSv1", "TLSv1.1", "TLSv1.2"},
                     null,
                     new DefaultHostnameVerifier()); // 优先绕过安全证书
         } catch (KeyManagementException e) {
